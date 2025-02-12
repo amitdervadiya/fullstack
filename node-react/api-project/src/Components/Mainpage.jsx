@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 export default function Mainpage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [image, setImage] = useState("");
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -20,21 +21,23 @@ export default function Mainpage() {
 
   const handlesubmit = async (e) => {
     e.preventDefault();
-    if (!name || !email) {
+    if (!name || !email || !image) {
       alert("Please enter both name and email.");
       return;
     }
-      const response = await axios.post("http://localhost:1008/addadmin", {
-        name,
-        email,
-      });
+    const response = await axios.post("http://localhost:1008/addadmin", {
+      name,
+      email,
+      image
+    });
 
-      // Update the data list with the new entry
-      setData([...data, response.data]);
+    // Update the data list with the new entry
+    setData([...data, response.data]);
 
-      // Clear form fields
-      setName("");
-      setEmail("")
+    // Clear form fields
+    setName("");
+    setEmail("");
+    setImage("")
   };
 
   return (
@@ -58,6 +61,20 @@ export default function Mainpage() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter Email"
               className="w-full p-2 border border-gray-300 rounded mb-3"
+            />
+            <input
+              type="file"
+              onChange={(e) => {
+                const reader = new FileReader()
+                reader.readAsDataURL(e.target.files[0])
+                reader.onload = () => {
+                  console.log(reader.result)
+                  setImage(reader.result)
+                }
+              }}
+              placeholder="Enter Image"
+              className="w-full p-2 border border-gray-300 rounded mb-3"
+              accept="image/*"
             />
             <button
               type="submit"
