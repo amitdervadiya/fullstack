@@ -26,7 +26,7 @@ module.exports.registeradmin = async (req,res)=>{
          res.status(200).json({msg:'admin register successfully',data:data})
       })
    }
- 
+
 }
 
 module.exports.viewadmin = async (req,res)=>{

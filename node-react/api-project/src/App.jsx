@@ -2,8 +2,9 @@ import { useState } from 'react'
 import './App.css'
 import { BrowserRouter , Routes,Route } from 'react-router-dom';
 import Loginpage from './Components/loginpage';
-import Signuppage from './Components/signuppage';
+import axios from 'axios';
 import Mainpage from './Components/Mainpage';
+import Signuppage from './Components/Signuppage';
 
 
 
@@ -16,8 +17,8 @@ function App() {
      <BrowserRouter>
      
         <Routes>
-          <Route path="/" element={<Loginpage/>} />
-          <Route path="/signup" element={<Signuppage />} />
+          <Route path="/" element={<Signuppage/>} />
+          <Route path="/login" element={<Loginpage/>} />
           <Route path="/mainpage" element={<Mainpage />} />
         </Routes>
      
