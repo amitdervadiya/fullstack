@@ -8,10 +8,11 @@ const schema = mongoose.Schema({
         type: String,
         required: true
     },
-    image: {
+    password: {
         type: String,
         required: true
     },
+
 })
 
 

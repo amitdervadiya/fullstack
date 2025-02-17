@@ -2,10 +2,14 @@ const express = require('express')
 const route = express.Router()
 const handler  = require('../controller/handler')
 const upload = require('../middleware/upload')
-route.get('/',handler.getadmin)
+const auth = require("../middleware/authjwt")
+
+
+route.post('/registerAdmin',handler.registeradmin)
+route.post('/login',handler.login)
 route.get('/viewAdmin',handler.viewadmin)
-route.post('/addAdmin',upload,handler.addadmin)
-route.delete('/deleteAdmin',handler.deleteadmin)
-route.put('/updateAdmin',upload,handler.updateadmin)
+route.delete('/deleteAdmin/:id', handler.deleteadmin);
+route.put('/updateAdmin/:id',handler.updateadmin)
+
 
 module.exports = route

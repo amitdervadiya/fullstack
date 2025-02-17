@@ -1,6 +1,10 @@
 import { useState } from 'react'
 import './App.css'
-import Mainpage from './Components/Mainpage'
+import { BrowserRouter , Routes,Route } from 'react-router-dom';
+import Loginpage from './Components/loginpage';
+import Signuppage from './Components/signuppage';
+import Mainpage from './Components/Mainpage';
+
 
 
 
@@ -9,7 +13,15 @@ function App() {
 
   return (
     <>
-      <Mainpage/>
+     <BrowserRouter>
+     
+        <Routes>
+          <Route path="/" element={<Loginpage/>} />
+          <Route path="/signup" element={<Signuppage />} />
+          <Route path="/mainpage" element={<Mainpage />} />
+        </Routes>
+     
+    </BrowserRouter>
     </>
   )
 }
