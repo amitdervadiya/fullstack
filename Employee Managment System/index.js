@@ -15,5 +15,5 @@ app.use("/manager", managerRoute);
 app.use("/employee" , employeeRoute);
 
 app.listen(port, (err) => {
-    err ? console.log(err) : console.log(`server started : http://localhost:${port}`);
-});
+    err ? console.log(err) : console.log(`server started : http://localhost:${port}`)
+})

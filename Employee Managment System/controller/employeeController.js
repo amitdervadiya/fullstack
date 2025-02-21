@@ -11,6 +11,7 @@ module.exports.employeeList = async (req, res) => {
 }
 
 module.exports.employeeRegister = async (req, res) => {
+    console.log(req.body)
     req.body.image = req.file.path;
     req.body.employeePassword = await bcryptjs.hash(req.body.employeePassword, 10);
     req.body.managerId = req.user.managerData._id; 
@@ -47,8 +48,8 @@ module.exports.updateemployee = async (req, res) => {
     if (req.user.employeeData._id !== req.query.id) {
         return res.status(403).json({ message: "Access denied. You can only update your own profile." });
     }
-
-    const data = await employeeSchema.findByIdAndUpdate(req.query.id, req.body, { new: true });
+    req.body.employeePassword = await bcryptjs.hash(req.body.employeePassword, 10);
+    const data = await employeeSchema.findByIdAndUpdate(req.query.id, req.body);
     if (!data) {
         return res.status(404).json({ message: "Employee not found" });
     }

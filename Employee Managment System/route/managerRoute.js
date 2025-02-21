@@ -7,10 +7,11 @@ const managerMulter = require('../middleware/managerimg');
 
 managerRoute.post("/Register", authentication, managerMulter, managerController.managerRegister);
 managerRoute.post("/Login", managerController.managerLogin);
-managerRoute.get("/List", authentication, checkAdminOrManager, managerController.managerList);
 managerRoute.get("/Profile", authentication, managerController.managerProfile);
 managerRoute.post("/ChangePassword", authentication, managerController.managerChangePassword);
 managerRoute.post("/forgotPassword", managerController.forgotPassword);
+managerRoute.get("/EmployeeList",authentication,managerController.employeeList);
+
 managerRoute.delete("/Delete", authentication, checkAdminOrManager, managerController.deleteManager);
 managerRoute.put("/Update", authentication, managerMulter, managerController.updateManager);
 

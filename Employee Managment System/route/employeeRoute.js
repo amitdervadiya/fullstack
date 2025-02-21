@@ -5,14 +5,13 @@ const checkAdminOrManager = require('../middleware/checkAdminOrManager');
 const authentication = require('../middleware/jwt');
 const employeeMulter = require('../middleware/empolyeeimg');
 
-employeeRoute.post("/register", authentication, employeeMulter, employeeController.employeeRegister);
-employeeRoute.post("/login", employeeController.employeeLogin);
-employeeRoute.get("/list", authentication, checkAdminOrManager, employeeController.employeeList);
-employeeRoute.get("/profile", authentication, employeeController.employeeProfile);
-employeeRoute.post("/changePassword", authentication, employeeController.employeeChangePassword);
-employeeRoute.post("/forgotPassword", employeeController.forgotPassword);
-employeeRoute.post("/resetPassword", employeeController.resetPassword);
-employeeRoute.delete("/delete", authentication, checkAdminOrManager, employeeController.deleteemployee);
-employeeRoute.put("/update", authentication, employeeMulter, employeeController.updateemployee);
+employeeRoute.post("/Register", authentication, employeeMulter, employeeController.employeeRegister);
+employeeRoute.post("/Login", employeeController.employeeLogin);
+employeeRoute.get("/List", authentication, checkAdminOrManager, employeeController.employeeList);
+employeeRoute.get("/Profile", authentication, employeeController.employeeProfile);
+employeeRoute.post("/ChangePassword", authentication, employeeController.employeeChangePassword);
+employeeRoute.post("/ForgotPassword", employeeController.forgotPassword);
+employeeRoute.post("/ResetPassword", employeeController.resetPassword);
+employeeRoute.put("/Update", authentication, employeeMulter, employeeController.updateemployee);
 
 module.exports = employeeRoute;

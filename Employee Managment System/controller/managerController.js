@@ -1,14 +1,11 @@
 const managerSchema = require('../model/managerSchema');
+const employeeSchema = require('../model/employeeSchema');
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { sendOtp } = require('../middleware/mailer');
 const fs = require('fs');
 
-module.exports.managerList = async (req, res) => {
-    await managerSchema.find({}).then((data) => {
-        res.status(200).json({ message: "All Manager Data", data });
-    });
-}
+
 
 module.exports.managerRegister = async (req, res) => {
     req.body.image = req.file.path;
@@ -64,6 +61,11 @@ module.exports.managerProfile = async (req, res) => {
         return res.status(404).json({ message: "Manager Not Found" });
     }
     res.status(200).json({ message: "Manager Profile", data: profile });
+}
+module.exports.employeeList = async (req, res) => {
+    await employeeSchema.find({}).then((data) => {
+        res.status(200).json({ message: "All Manager Data", data });
+    });
 }
 
 module.exports.managerChangePassword = async (req, res) => {
