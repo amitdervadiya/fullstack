@@ -1,0 +1,114 @@
+<div id="wrapper">
+    <div class="container">
+      <header class="left header">
+        <div class="title-header">
+          <h1 id="title" class="text-center">blogs </h1>
+          <p id="description" class="description text-center">Thank you for taking the time to help us improve the platform</p>
+        </div>
+      </header>    
+  
+    <form id="survey-form" class="right" action="/insert"  method="post">
+      <div class="form-set">
+        <label id="name-label" for="name">Name</label>
+          <input
+                 type="text"
+                 name="name"
+                 id="name"
+                 class="form-control"
+                 placeholder="Enter your name"
+                 required/>
+      </div>
+  
+      <div class="form-set">
+        <label id="email-label" for="email">E-mail</label>
+          <input
+                 type="email"
+                 name="email"
+                 id="email"
+                 class="form-control"
+                 placeholder="Enter your e-mail"
+                 required/>
+      </div>
+  
+     
+  
+   
+  
+      <div class="form-set">
+        <p id="radio-label">Enter your Gender </p>
+        <label class="radio">
+          <input
+                 name="gender"
+                 type="radio"
+                 class="input-radio"
+                 value="man"
+                 checked
+          />Man
+        </label>
+      
+        <label class="radio">
+          <input
+                 name="gender"
+                 type="radio"
+                 class="input-radio"
+                 value="woman"
+          />Woman
+        </label>
+  
+        <label class="radio">
+          <input
+                 name="gender"
+                 type="radio"
+                 class="input-radio"
+                 value="other"
+          />Other
+      </label>
+      </div>
+  
+      <div class="form-set">
+      
+        <label>
+          <input
+                 name="prefer"
+                 value="travel-blogs"
+                 type="checkbox"
+                 class="input-checkbox"
+          />travel blogs
+        </label>
+      
+        <label>
+          <input
+                 name="prefer"
+                 value="personal-blogs"
+                 type="checkbox"
+                 class="input-checkbox"
+          />personal-blogs
+        </label>
+      
+      
+      
+        <label>
+          <input
+                 name="prefer"
+                 value="education-blog"
+                 type="checkbox"
+                 class="input-checkbox"
+          />educationblog
+        </label>
+      </div>
+  
+     
+    
+     <div class="form-set">
+        <button type="submit" id="submit" class="submit-button">
+          Submit
+        </button>
+     </div>
+    </form>
+  </div>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css?family=Poppins:200i,400&display=swap');
+
+
+  </style>
