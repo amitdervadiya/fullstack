@@ -4,31 +4,104 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 15px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+        }
+        .radio-group, .checkbox-group {
+            text-align: left;
+        }
+        input[type="radio"],
+        input[type="checkbox"] {
+            margin-right: 5px;
+        }
+        .submit-btn {
+            background: #ff7eb3;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        .submit-btn:hover {
+            background: #ff5a92;
+        }
+    </style>
 </head>
 <body>
-    <center>
-    <h1>Edit-Data</h1>
-    <form action="/update"  method="post">
-        <input type="hidden" name="id" value="<%= user.id %>">
-        <input type="text" placeholder="Enter your name" name="name" value="<%= user.name %>">
-        <input type="text" placeholder="Enter your email" name="email" value="<%= user.email %>">
-       
-        <label>man</label>
-        <input type="radio" name="gender" value="man" <%= user.gender === 'man' ? 'checked' : '' %>>
-        <label>woman</label>
-        <input type="radio" name="gender" value="woman" <%= user.gender === 'woman' ? 'checked' : '' %>>
-        <label>others</label>
-        <input type="radio" name="gender" value="others" <%= user.gender === 'others' ? 'checked' : '' %>>
-        <br>
-        <label>travel-blogs</label>
-        <input type="checkbox" name="prefer" value="travel-blogs" <%= user.prefer.includes('travel-blogs') ? 'checked' : '' %>>
-        <label>personal-blogs</label>
-        <input type="checkbox" name="prefer" value="personal-blogs" <%= user.prefer.includes('personal-blogs') ? 'checked' : '' %>>
-        <label>education-blog</label>
-        <input type="checkbox" name="prefer" value="education-blog" <%= user.prefer.includes('education-blog') ? 'checked' : '' %>>
-      
-        <button type="submit">UPDATE</button>
-    </form>
-    </center>
+    <div class="container">
+        <h1>Edit Data</h1>
+        <form action="/update" method="post">
+            <input type="hidden" name="id" value="<%= user.id %>">
+
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" name="name" value="<%= user.name %>" placeholder="Enter your name">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" name="email" value="<%= user.email %>" placeholder="Enter your email">
+            </div>
+
+            <div class="form-group radio-group">
+                <label>Gender</label>
+                <label><input type="radio" name="gender" value="man" <%= user.gender === 'man' ? 'checked' : '' %>> Man</label>
+                <label><input type="radio" name="gender" value="woman" <%= user.gender === 'woman' ? 'checked' : '' %>> Woman</label>
+                <label><input type="radio" name="gender" value="others" <%= user.gender === 'others' ? 'checked' : '' %>> Others</label>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label>Preferences</label>
+                <label><input type="checkbox" name="prefer" value="travel-blogs" <%= user.prefer.includes('travel-blogs') ? 'checked' : '' %>> Travel Blogs</label>
+                <label><input type="checkbox" name="prefer" value="personal-blogs" <%= user.prefer.includes('personal-blogs') ? 'checked' : '' %>> Personal Blogs</label>
+                <label><input type="checkbox" name="prefer" value="education-blog" <%= user.prefer.includes('education-blog') ? 'checked' : '' %>> Education Blogs</label>
+            </div>
+
+            <button type="submit" class="submit-btn">Update</button>
+        </form>
+    </div>
 </body>
 </html>

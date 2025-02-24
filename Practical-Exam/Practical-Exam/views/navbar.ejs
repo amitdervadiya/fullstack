@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <title>Task Management</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.4/css/boxicons.min.css">
 <link rel="stylesheet" href="style.css">
-</head>
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
 
 * {
   box-sizing: border-box;
@@ -17,36 +17,22 @@
 
 body {
   font-family: "Poppins", sans-serif;
-  background: linear-gradient(rgba(12, 3, 51, 0.3), rgba(12, 3, 51, 0.5));
-  background-repeat: no-repeat;
+  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+  color: #fff;
   min-height: 100vh;
 }
 
-/* BACKGROUND VIDEO */
-
+/* BACKGROUND EFFECT */
 .background-video {
   position: absolute;
-  right: 0;
-  bottom: 0;
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
   z-index: -1;
-}
-
-@media (min-aspect-ratio: 16/9) {
-  .background-video {
-    width: 100%;
-    height: auto;
-  }
-}
-
-@media (max-aspect-ratio: 4/3) {
-  .background-video {
-    width: auto;
-    height: 100%;
-  }
+  opacity: 0.5;
 }
 
 /* HEADER */
-
 header {
   position: fixed;
   top: 0;
@@ -56,257 +42,105 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: 5;
+  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 10;
+  box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
 }
 
-.logo {
-  width: 40px;
+.navbar {
+  display: flex;
+  gap: 2rem;
 }
 
 .nav-item {
   position: relative;
   color: #fff;
   font-size: 1rem;
-  font-weight: 500;
-  line-height: 25px;
-  letter-spacing: -0.13px;
   text-decoration: none;
-  margin-left: 2.5rem;
-  transition: all 0.5s ease;
+  font-weight: 500;
+  padding: 10px 15px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
 }
 
 .nav-item:hover {
-  color: rgba(168, 239, 255, 0.9);
-}
-
-.nav-item::after {
-  content: "";
-  position: absolute;
-  bottom: -0.3rem;
-  left: 50%;
-  width: 0;
-  height: 0.15rem;
-  transform: translateX(-50%);
-  background-color: rgba(168, 239, 255, 0.9);
-  transition: all 0.5s ease;
-}
-
-.nav-item:hover:after {
-  width: 100%;
-}
-
-.icons {
-  position: absolute;
-  right: 5%;
-  font-size: 2.3rem;
-  color: #fff;
-  cursor: pointer;
-  display: none;
-}
-
-#check {
-  display: none;
+  background: rgba(168, 239, 255, 0.2);
+  transform: scale(1.1);
 }
 
 /* CONTENT */
-
 .content {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  text-align: center;
 }
 
-.content h1 {
-  font-size: clamp(3rem, 10vw, 8rem);
+h1 {
+  font-size: 4rem;
   font-weight: 600;
-  -webkit-text-stroke: 2px rgba(168, 239, 255, 1);
-  color: transparent;
-  transition: all 0.5s ease;
+  color: #00eaff;
+  text-shadow: 0 0 20px rgba(0, 234, 255, 0.8);
 }
 
+/* BUTTON */
 .btn {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 180px;
-  height: 50px;
-  border-radius: 5px;
-  background: transparent;
-  overflow: hidden;
-  transition: all 0.3s ease-in;
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 30px;
+  background: #00eaff;
+  color: #121212;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
 }
 
 .btn:hover {
-  transform: translateY(5px);
+  background: #fff;
+  color: #121212;
+  transform: translateY(-3px);
+  box-shadow: 0px 5px 15px rgba(0, 234, 255, 0.5);
 }
 
-.light::before {
-  content: "";
-  position: absolute;
-  background-image: conic-gradient(
-    transparent 10deg,
-    rgba(168, 239, 255, 1),
-    90deg,
-    transparent 170deg
-  );
-  width: 200%;
-  height: 500%;
-  animation: rotate 3s linear infinite;
-}
-
-@keyframes rotate {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-.light:after {
-  content: "Explore";
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 170px;
-  height: 40px;
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(35px);
-  -webkit-backdrop-filter: blur(35px);
-  color: #fff;
-  font-size: clamp(0.9rem, 3vw, 1.2rem);
-  border-radius: 5px;
-}
-
-/* MEDIA QUERIES */
-
-@media (max-width: 900px) {
-  header {
-    padding: 1.3rem 5%;
-  }
-}
-
-@media (max-width: 700px) {
-  header::before {
-    position: absolute;
-    content: "";
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    background: rbga(0, 0, 0, 0.1);
-    backdrop-filter: blur(50px);
-    z-index: -1;
-  }
-
-  header::after {
-    position: absolute;
-    content: "";
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.4),
-      transparent
-    );
-    transition: 0.8s;
-  }
-
-  .icons {
-    display: inline-flex;
-  }
-
-  #check:checked ~ .icons #menu-icon {
-    display: none;
-  }
-
-  .icons #close-icon {
-    display: none;
-  }
-
-  #check:checked ~ .icons #close-icon {
-    display: block;
-  }
-
+/* RESPONSIVE */
+@media (max-width: 768px) {
   .navbar {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    height: 0;
-    background: rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(50px);
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
-
-  #check:checked ~ .navbar {
-    height: 16rem;
-  }
-
+  
   .nav-item {
     display: block;
-    font-size: 1.1rem;
-    margin: 2rem 0;
     text-align: center;
-    transform: translateY(-50px);
-    opacity: 0;
-    transition: all 0.3s ease;
   }
-
-  .nav-item:hover::after {
-    width: auto;
-  }
-
-  #check:checked ~ .navbar a {
-    transform: translateY(0);
-    opacity: 1;
-    transition-delay: calc(0.15s * var(--i));
+  
+  h1 {
+    font-size: 2.5rem;
   }
 }
-
-@media (max-width: 450px) {
-  .btn {
-    width: 130px;
-  }
-
-  .light:after {
-    width: 120px;
-  }
-}
-
 </style>
+</head>
 <body>
- 
 
-  <header>
-    
+<header>
+  <nav class="navbar">
+    <a href="#" class="nav-item">Home</a>
+    <a href="/taskform" class="nav-item">Blog Form</a>
+    <a href="/tasklist" class="nav-item">Blog List</a>
+    <a href="/" class="nav-item">Sign out</a>
+  </nav>
+</header>
 
-    <input type="checkbox" id="check" />
-    <label for="check" class="icons">
-      <i class="bx bx-menu" id="menu-icon"></i>
-      <i class="bx bx-x" id="close-icon"></i>
-    </label>
+<div class="content">
+  <h1>Blogs</h1>
+  <a href="/taskform" class="btn">Create a Blog</a>
+</div>
 
-    <nav class="navbar">
-      <a href="#" class="nav-item" style="--i: 0">Home</a>
-      <a href="/taskform" class="nav-item" style="--i: 1">blog Form</a>
-      <a href="/tasklist" class="nav-item" style="--i: 2">blog List</a>
-      <a href="/" class="nav-item" style="--i: 3">Sign out</a>
-    </nav>
-  </header>
-  <br>
-
-  <br><br><br>
- <h1>blogs</h1>
- 
 </body>
 </html>

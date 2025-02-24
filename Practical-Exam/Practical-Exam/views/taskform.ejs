@@ -1,114 +1,94 @@
-<div id="wrapper">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Form</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 500px;
+        }
+        .text-center {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .form-set {
+            margin-bottom: 15px;
+        }
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+        }
+        .input-radio, .input-checkbox {
+            margin-right: 10px;
+        }
+        .submit-button {
+            background: #ff7eb3;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .submit-button:hover {
+            background: #ff5a92;
+        }
+    </style>
+</head>
+<body>
     <div class="container">
-      <header class="left header">
-        <div class="title-header">
-          <h1 id="title" class="text-center">blogs </h1>
-          <p id="description" class="description text-center">Thank you for taking the time to help us improve the platform</p>
-        </div>
-      </header>    
-  
-    <form id="survey-form" class="right" action="/insert"  method="post">
-      <div class="form-set">
-        <label id="name-label" for="name">Name</label>
-          <input
-                 type="text"
-                 name="name"
-                 id="name"
-                 class="form-control"
-                 placeholder="Enter your name"
-                 required/>
-      </div>
-  
-      <div class="form-set">
-        <label id="email-label" for="email">E-mail</label>
-          <input
-                 type="email"
-                 name="email"
-                 id="email"
-                 class="form-control"
-                 placeholder="Enter your e-mail"
-                 required/>
-      </div>
-  
-     
-  
+        <header class="text-center">
+            <h1 id="title">Blogs</h1>
    
-  
-      <div class="form-set">
-        <p id="radio-label">Enter your Gender </p>
-        <label class="radio">
-          <input
-                 name="gender"
-                 type="radio"
-                 class="input-radio"
-                 value="man"
-                 checked
-          />Man
-        </label>
-      
-        <label class="radio">
-          <input
-                 name="gender"
-                 type="radio"
-                 class="input-radio"
-                 value="woman"
-          />Woman
-        </label>
-  
-        <label class="radio">
-          <input
-                 name="gender"
-                 type="radio"
-                 class="input-radio"
-                 value="other"
-          />Other
-      </label>
-      </div>
-  
-      <div class="form-set">
-      
-        <label>
-          <input
-                 name="prefer"
-                 value="travel-blogs"
-                 type="checkbox"
-                 class="input-checkbox"
-          />travel blogs
-        </label>
-      
-        <label>
-          <input
-                 name="prefer"
-                 value="personal-blogs"
-                 type="checkbox"
-                 class="input-checkbox"
-          />personal-blogs
-        </label>
-      
-      
-      
-        <label>
-          <input
-                 name="prefer"
-                 value="education-blog"
-                 type="checkbox"
-                 class="input-checkbox"
-          />educationblog
-        </label>
-      </div>
-  
-     
-    
-     <div class="form-set">
-        <button type="submit" id="submit" class="submit-button">
-          Submit
-        </button>
-     </div>
-    </form>
-  </div>
-
-  <style>
-    @import url('https://fonts.googleapis.com/css?family=Poppins:200i,400&display=swap');
-
-
-  </style>
+        </header>
+        <form id="survey-form" action="/insert" method="post">
+            <div class="form-set">
+                <label for="name">Name</label>
+                <input type="text" name="name" id="name" class="form-control" placeholder="Enter your name" required>
+            </div>
+            <div class="form-set">
+                <label for="email">E-mail</label>
+                <input type="email" name="email" id="email" class="form-control" placeholder="Enter your e-mail" required>
+            </div>
+            <div class="form-set">
+                <p>Enter your Gender</p>
+                <label><input name="gender" type="radio" class="input-radio" value="man" checked>Man</label>
+                <label><input name="gender" type="radio" class="input-radio" value="woman">Woman</label>
+                <label><input name="gender" type="radio" class="input-radio" value="other">Other</label>
+            </div>
+            <div class="form-set">
+                <label><input name="prefer" value="travel-blogs" type="checkbox" class="input-checkbox"> Travel blogs</label>
+                <label><input name="prefer" value="personal-blogs" type="checkbox" class="input-checkbox"> Personal blogs</label>
+                <label><input name="prefer" value="education-blog" type="checkbox" class="input-checkbox"> Education blogs</label>
+            </div>
+            <div class="form-set">
+                <button type="submit" id="submit" class="submit-button">Submit</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
