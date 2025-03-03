@@ -3,9 +3,7 @@ import React, { useEffect, useState } from "react";
 
 export default function Mainpage() {
 
-
   const [data, setData] = useState([]);
-
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -19,7 +17,7 @@ export default function Mainpage() {
       headers: { Authorization: `Bearer ${token}` }
     }).then((response) => {
       console.log(response.data);
-      setData(response.data)
+      setData(response.data.data)
     })
       .catch((error) => {
         console.error("Error fetching manager:", error);
@@ -27,12 +25,8 @@ export default function Mainpage() {
   }, []);
 
 
-
-
-
   return (
     <div className="min-h-screen flex bg-gray-100">
-      {/* Sidebar */}
       <div className="w-1/4 bg-gray-800 text-white p-6">
         <h2 className="text-2xl font-bold mb-8">Admin Dashboard</h2>
         <nav>
@@ -47,21 +41,14 @@ export default function Mainpage() {
         </nav>
       </div>
 
-      {/* Main content */}
+    
       <div className="flex-1 p-8">
         <h1 className="text-3xl font-bold text-gray-800 mb-6">manager List</h1>
-
-
-
-
-        {/* Admin Cards */}
+      
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {/* {
-            response.data((e, i) => (
-              <div
-                key={i}
-                className="bg-white p-6 rounded-lg shadow-lg border border-gray-200"
-              >
+          {
+          data.map((e, i) => (
+              <div key={i} className="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
                 <label className="font-semibold text-lg">Name:</label>
                 <p className="text-lg text-gray-700">{e.managerName}</p>
                 <label className="font-semibold text-lg">Email:</label>
@@ -70,7 +57,7 @@ export default function Mainpage() {
                 <p className="text-gray-500">.....</p>
               </div>
             ))
-          } */}
+          }
 
         </div>
       </div>

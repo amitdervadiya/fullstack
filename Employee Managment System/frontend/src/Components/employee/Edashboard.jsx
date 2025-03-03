@@ -14,7 +14,7 @@ export default function Edashboard() {
       return;
     }
 
-    axios.get('http://localhost:2005/employee/Profile', {
+    axios.get('http://localhost:2005/EmployeeList', {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((response) => {
