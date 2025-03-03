@@ -19,14 +19,20 @@ export default function Eloginpage() {
                 employeePassword
             });
 
+            console.log("Full Response:", response);
+            console.log("Response Data:", response.data);
+            console.log("Token Received:", response.data.token);
+
             if (response.data.token) {
-                localStorage.setItem("etoken", response.data.token);
+                localStorage.setItem("employeetoken", response.data.token);
+                console.log("Stored Token:", localStorage.getItem("employeetoken"));
                 navigate('/edashboard');
             } else {
+                console.error("Login failed! No token received.");
                 alert("Login failed! Please check your credentials.");
             }
         } catch (error) {
-            console.error("Login error:", error);
+            console.error("Login error:", error.response?.data || error.message);
             alert("An error occurred during login. Please try again.");
         }
     };
@@ -36,6 +42,7 @@ export default function Eloginpage() {
         <div className="flex justify-center items-center min-h-screen bg-gray-900">
             <form
                 onSubmit={handleSubmit}
+                method='post'
                 className="bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md"
                 encType='multipart/form-data'
             >

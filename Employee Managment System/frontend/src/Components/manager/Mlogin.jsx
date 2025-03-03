@@ -12,15 +12,15 @@ export default function MLogin() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+
         try {
             const response = await axios.post("http://localhost:2005/manager/Login", {
                 managerEmail,
                 managerPassword
             });
-    
+
             if (response.data.token) {
-                localStorage.setItem("mtoken", response.data.token);  
+                localStorage.setItem("mtoken", response.data.token);
                 navigate('/mdashboard');
             } else {
                 alert("Login failed! Please check your credentials.");
@@ -30,7 +30,7 @@ export default function MLogin() {
             alert("An error occurred during login. Please try again.");
         }
     };
-    
+
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-900">

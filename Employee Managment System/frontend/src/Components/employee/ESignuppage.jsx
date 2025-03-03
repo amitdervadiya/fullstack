@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import axios from 'axios';
@@ -13,34 +13,34 @@ export default function MSignuppage() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const token = localStorage.getItem("mtoken"); 
-    
+        const token = localStorage.getItem("mtoken");
+
         if (!token) {
             console.log("No token found, please login.");
             return;
         }
-    
+
         axios.get('http://localhost:2005/manager/Profile', {
             headers: { Authorization: `Bearer ${token}` }
         })
-        .then((response) => {
-            console.log("manager Data:", response.data);
-        })
-        .catch((error) => {
-            console.error("Error fetching manager:", error);
-        });
-    }, []); 
-    
+            .then((response) => {
+                console.log("manager Data:", response.data);
+            })
+            .catch((error) => {
+                console.error("Error fetching manager:", error);
+            });
+    }, []);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
-        const token = localStorage.getItem("mtoken"); 
-    
+
+        const token = localStorage.getItem("mtoken");
+
         if (!employeePassword) {
             alert("Password is required!");
             return;
         }
-    
+
         try {
             const formData = new FormData();
             formData.append('employeeName', employeeName);
@@ -49,27 +49,30 @@ export default function MSignuppage() {
             formData.append('employeePhone', employeePhone);
             formData.append('gender', gender);
             formData.append('image', image);
-    
+
             console.log("Sending FormData:", Object.fromEntries(formData));
-    
+
             let response = await axios.post('http://localhost:2005/employee/Register', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    Authorization: `Bearer ${token}` 
+                    Authorization: `Bearer ${token}`
                 },
             });
-    
+
             if (response) {
                 navigate('/mlogin');
             }
             console.log(response.data);
-    
+
         } catch (error) {
             console.error('Error during registration:', error);
         }
     };
-    
 
+    const elogin = () => {
+        navigate('/eloginpage')
+
+    }
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-900">
@@ -141,6 +144,9 @@ export default function MSignuppage() {
                     className="w-full p-3 rounded-lg bg-blue-600 text-white font-bold hover:bg-blue-700 transition duration-300 active:scale-95"
                 >
                     Sign Up
+                </button>
+                <button onClick={elogin} style={{height:'30px'}}>
+                    already have an account
                 </button>
             </form>
         </div>

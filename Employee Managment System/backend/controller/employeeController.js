@@ -33,6 +33,8 @@ module.exports.employeeLogin = async (req, res) => {
     if (await bcryptjs.compare(req.body.employeePassword, employee.employeePassword)) {
         let token = jwt.sign({ employeeData: employee }, "employee000", { expiresIn: "3h" });
         res.status(200).json({ message: "employee Log In", token: token });
+        console.log(token)
+        console.log("login succesfully ")
     } else {
         res.status(200).json({ message: "Password is wrong" });
     }

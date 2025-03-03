@@ -7,7 +7,7 @@ export default function Edashboard() {
 
 
   useEffect(() => {
-    const token = localStorage.getItem("etoken");
+    const token = localStorage.getItem("employeetoken");
 
     if (!token) {
       console.log("No token found, please login.");
