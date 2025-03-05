@@ -17,7 +17,6 @@ export default function Mdashboard() {
       console.log("No token found, please login.");
       return;
     }
-
     axios.get('http://localhost:2005/EmployeeList', {
       headers: { Authorization: `Bearer ${token}` },
     })

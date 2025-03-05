@@ -5,7 +5,7 @@ const authentication = require('../middleware/jwt');
 const checkAdminOrManager = require('../middleware/checkAdminOrManager');
 const managerMulter = require('../middleware/managerimg');
 
-managerRoute.post("/Register", authentication, managerMulter, managerController.managerRegister);
+managerRoute.post("/Register", managerMulter, managerController.managerRegister);
 managerRoute.post("/Login", managerController.managerLogin);
 managerRoute.get("/Profile", authentication, managerController.managerProfile);
 managerRoute.post("/ChangePassword", authentication, managerController.managerChangePassword);

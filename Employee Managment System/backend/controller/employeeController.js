@@ -11,16 +11,24 @@ module.exports.employeeList = async (req, res) => {
 }
 
 module.exports.employeeRegister = async (req, res) => {
-    console.log(req.body)
-    req.body.image = req.file.path;
-    req.body.employeePassword = await bcryptjs.hash(req.body.employeePassword, 10);
-    req.body.managerId = req.user.managerData._id; 
-    await employeeSchema.create(req.body).then(async (data) => {
-        const populatedData = await employeeSchema.findById(data._id).populate('managerId');
-        res.status(200).json({ message: "employee Created Successfully", data: populatedData });
-    });
-}
+    console.log(req.body);
 
+    req.body.image = req.file?.path || null;
+    req.body.employeePassword = await bcryptjs.hash(req.body.employeePassword, 10);
+
+    if (!req.body.managerId) {
+        return res.status(400).json({ message: "Manager ID is required!" });
+    }
+
+    await employeeSchema.create(req.body)
+        .then((data) => employeeSchema.findById(data._id).populate("managerId"))
+        .then((populatedData) =>
+            res.status(200).json({ message: "Employee Created Successfully", data: populatedData })
+        )
+        .catch((error) =>
+            res.status(500).json({ message: "Server Error", error })
+        );
+};
 
 
 
@@ -86,7 +94,7 @@ module.exports.employeeChangePassword = async (req, res) => {
     if (req.body.newPassword !== req.body.confirmPassword) {
         return res.status(400).json({ message: "New Password and Confirm Password do not match" });
     }
-    
+
     employee.employeePassword = await bcryptjs.hash(req.body.newPassword, 10);
     await employee.save();
     res.status(200).json({ message: "Password changed successfully" });

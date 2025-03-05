@@ -8,15 +8,24 @@ const fs = require('fs');
 
 
 module.exports.managerRegister = async (req, res) => {
-    console.log(req.body)
-    req.body.image = req.file.path
+    console.log(req.body);
+
+    req.body.image = req.file?.path || null;
     req.body.managerPassword = await bcryptjs.hash(req.body.managerPassword, 10);
-    req.body.adminId = req.user.adminData._id;
-    await managerSchema.create(req.body).then(async (data) => {
-        const populatedData = await managerSchema.findById(data._id).populate('adminId');
-        res.status(200).json({ message: "Manager Created Successfully", data: populatedData });
-    });
-}
+
+    if (!req.body.adminId) {
+        return res.status(400).json({ message: "Admin ID is required!" });
+    }
+
+    await managerSchema.create(req.body).then((data) =>
+        managerSchema.findById(data._id).populate('adminId')
+    ).then((populatedData) =>
+        res.status(200).json({ message: "Manager Created Successfully", data: populatedData })
+    ).catch((error) =>
+        res.status(500).json({ message: "Server Error", error })
+    );
+};
+
 
 module.exports.managerLogin = async (req, res) => {
     console.log(req.body)

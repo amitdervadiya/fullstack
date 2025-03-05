@@ -5,7 +5,7 @@ const checkAdminOrManager = require('../middleware/checkAdminOrManager');
 const authentication = require('../middleware/jwt');
 const employeeMulter = require('../middleware/empolyeeimg');
 
-employeeRoute.post("/Register",authentication, employeeMulter, employeeController.employeeRegister);
+employeeRoute.post("/Register", employeeMulter, employeeController.employeeRegister);
 employeeRoute.post("/Login", employeeController.employeeLogin);
 employeeRoute.get("/List", authentication, checkAdminOrManager, employeeController.employeeList);
 employeeRoute.get("/Profile", authentication, employeeController.employeeProfile);

@@ -1,154 +1,157 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function MSignuppage() {
-    const [employeeName, setEmployeeName] = useState('');
-    const [employeeEmail, setEmployeeEmail] = useState('');
-    const [employeePassword, setEmployeePassword] = useState('');
-    const [employeePhone, setEmployeePhone] = useState('');
-    const [gender, setGender] = useState('');
-    const [image, setImage] = useState(null);
-    const navigate = useNavigate();
+  const [employeeName, setEmployeeName] = useState("");
+  const [employeeEmail, setEmployeeEmail] = useState("");
+  const [employeePassword, setEmployeePassword] = useState("");
+  const [employeePhone, setEmployeePhone] = useState("");
+  const [gender, setGender] = useState("");
+  const [image, setImage] = useState(null);
+  const [managerId, setManagerId] = useState("");
 
-    useEffect(() => {
-        const token = localStorage.getItem("mtoken");
+  const navigate = useNavigate();
 
-        if (!token) {
-            console.log("No token found, please login.");
-            return;
-        }
+  useEffect(() => {
+    const token = localStorage.getItem("mtoken");
 
-        axios.get('http://localhost:2005/manager/Profile', {
-            headers: { Authorization: `Bearer ${token}` }
-        })
-            .then((response) => {
-                console.log("manager Data:", response.data);
-            })
-            .catch((error) => {
-                console.error("Error fetching manager:", error);
-            });
-    }, []);
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        const token = localStorage.getItem("mtoken");
-
-        if (!employeePassword) {
-            alert("Password is required!");
-            return;
-        }
-
-        try {
-            const formData = new FormData();
-            formData.append('employeeName', employeeName);
-            formData.append('employeeEmail', employeeEmail);
-            formData.append('employeePassword', employeePassword);
-            formData.append('employeePhone', employeePhone);
-            formData.append('gender', gender);
-            formData.append('image', image);
-
-            console.log("Sending FormData:", Object.fromEntries(formData));
-
-            let response = await axios.post('http://localhost:2005/employee/Register', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    Authorization: `Bearer ${token}`
-                },
-            });
-
-            if (response) {
-                navigate('/mlogin');
-            }
-            console.log(response.data);
-
-        } catch (error) {
-            console.error('Error during registration:', error);
-        }
-    };
-
-    const elogin = () => {
-        navigate('/eloginpage')
-
+    if (!token) {
+      console.log("No token found, please login.");
+      return;
     }
 
-    return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-900">
-            <form
-                onSubmit={handleSubmit}
-                className="bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md"
-                encType='multipart/form-data'
-            >
-                <h2 className="text-2xl font-bold text-white text-center mb-5">Employee Signup</h2>
+    axios
+      .get("http://localhost:2005/manager/Profile", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        console.log("Manager Data:", response.data);
+        setManagerId(response.data._id); // Store manager ID
+      })
+      .catch((error) => {
+        console.error("Error fetching manager:", error);
+      });
+  }, []);
 
-                <input
-                    type="text"
-                    onChange={(e) => setEmployeeName(e.target.value)}
-                    placeholder="Name"
-                    name='employeeName'
-                    className="w-full p-3 mb-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                />
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-                <input
-                    type="email"
-                    name='employeeEmail'
-                    onChange={(e) => setEmployeeEmail(e.target.value)}
-                    placeholder="employeeEmail"
-                    className="w-full p-3 mb-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                />
+    const token = localStorage.getItem("mtoken");
 
-                <input
-                    type="password"
-                    name='employeePassword'
-                    onChange={(e) => setEmployeePassword(e.target.value)}
-                    placeholder="Password"
-                    className="w-full p-3 mb-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                />
+    if (!employeePassword) {
+      alert("Password is required!");
+      return;
+    }
 
-                <input
-                    type="tel"
-                    name='employeePhone'
-                    onChange={(e) => setEmployeePhone(e.target.value)}
-                    placeholder="Phone Number"
-                    className="w-full p-3 mb-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                />
+    try {
+      const formData = new FormData();
+      formData.append("employeeName", employeeName);
+      formData.append("employeeEmail", employeeEmail);
+      formData.append("employeePassword", employeePassword);
+      formData.append("employeePhone", employeePhone);
+      formData.append("gender", gender);
+      formData.append("image", image);
+      formData.append("managerId", managerId); // Include managerId
 
-                <select
-                    onChange={(e) => setGender(e.target.value)}
-                    name='gender'
-                    className="w-full p-3 mb-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                >
-                    <option value="">Select Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                </select>
+      let response = await axios.post("http://localhost:2005/employee/Register", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-                <input
-                    type="file"
-                    name='image'
-                    onChange={(e) => setImage(e.target.files[0])}
-                    accept="image/*"
-                    className="w-full p-2 mb-4 bg-gray-700 text-white border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+      if (response) {
+        navigate("/mlogin");
+      }
+      console.log("Employee registered:", response.data);
+    } catch (error) {
+      console.error("Error during registration:", error);
+    }
+  };
 
-                <button
-                    type="submit"
-                    className="w-full p-3 rounded-lg bg-blue-600 text-white font-bold hover:bg-blue-700 transition duration-300 active:scale-95"
-                >
-                    Sign Up
-                </button>
-                <button onClick={elogin} style={{height:'30px'}}>
-                    already have an account
-                </button>
-            </form>
+  const elogin = () => {
+    navigate("/eloginpage");
+  };
+
+  return (
+    <div className="flex justify-center items-center min-h-screen bg-gray-900 px-4">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md border border-gray-700"
+        encType="multipart/form-data"
+      >
+        <h2 className="text-2xl font-bold text-white text-center mb-5">Employee Signup</h2>
+
+        <div className="space-y-4">
+          <input
+            type="text"
+            onChange={(e) => setEmployeeName(e.target.value)}
+            placeholder="Full Name"
+            className="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+
+          <input
+            type="email"
+            onChange={(e) => setEmployeeEmail(e.target.value)}
+            placeholder="Email"
+            className="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+
+          <input
+            type="password"
+            onChange={(e) => setEmployeePassword(e.target.value)}
+            placeholder="Password"
+            className="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+
+          <input
+            type="tel"
+            onChange={(e) => setEmployeePhone(e.target.value)}
+            placeholder="Phone Number"
+            className="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+
+          <select
+            onChange={(e) => setGender(e.target.value)}
+            className="w-full p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          >
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+
+          <input
+            type="file"
+            onChange={(e) => setImage(e.target.files[0])}
+            accept="image/*"
+            className="w-full p-2 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+          />
         </div>
-    );
+
+        {/* Hidden Input for Manager ID */}
+        <input type="hidden" value={managerId} />
+
+        <button
+          type="submit"
+          className="w-full mt-4 p-3 rounded-lg bg-blue-600 text-white font-bold hover:bg-blue-700 transition duration-300 active:scale-95"
+        >
+          Sign Up
+        </button>
+
+        <button
+          onClick={elogin}
+          className="w-full mt-2 p-3 rounded-lg bg-gray-600 text-white font-semibold hover:bg-gray-700 transition duration-300 active:scale-95"
+        >
+          Already have an account?
+        </button>
+      </form>
+    </div>
+  );
 }
