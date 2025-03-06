@@ -5,8 +5,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 export default function MLogin() {
     const [data, setData] = useState()
-    const [managerEmail, setManagerEmail] = useState('');
-    const [managerPassword, setManagerPassword] = useState('');
+    const [Email, setEmail] = useState('');
+    const [Password, setPassword] = useState('');
 
     const navigate = useNavigate();
 
@@ -15,20 +15,23 @@ export default function MLogin() {
 
         try {
             const response = await axios.post("http://localhost:2005/manager/Login", {
-                managerEmail,
-                managerPassword
+                Email,
+                Password
             });
+            
+            console.log("Full Response:", response.data);
 
             if (response.data.token) {
                 localStorage.setItem("mtoken", response.data.token);
-                navigate('/mdashboard');
+                navigate("/mdashboard");
             } else {
                 alert("Login failed! Please check your credentials.");
             }
         } catch (error) {
-            console.error("Login error:", error);
-            alert("An error occurred during login. Please try again.");
+            console.error("Login error:", error.response ? error.response.data : error.message);
+            alert("Login failed: " + (error.response?.data?.message || "Please try again."));
         }
+
     };
 
 
@@ -45,8 +48,8 @@ export default function MLogin() {
 
                 <input
                     type="email"
-                    name='managerEmail'
-                    onChange={(e) => setManagerEmail(e.target.value)}
+                    name='Email'
+                    onChange={(e) => setEmail(e.target.value)}
                     placeholder="Email"
                     className="w-full p-3 mb-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required
@@ -54,8 +57,8 @@ export default function MLogin() {
 
                 <input
                     type="password"
-                    name='managerPassword'
-                    onChange={(e) => setManagerPassword(e.target.value)}
+                    name='Password'
+                    onChange={(e) => setPassword(e.target.value)}
                     placeholder="Password"
                     className="w-full p-3 mb-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required

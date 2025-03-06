@@ -13,7 +13,7 @@ const fs = require('fs');
 module.exports.adminRegister = async (req, res) => {
     req.body.image = req.file.path
     console.log(req.body.adminPassword)
-  req.body.adminPassword = await bcryptjs.hash(req.body.adminPassword, 10);
+    req.body.adminPassword = await bcryptjs.hash(req.body.adminPassword, 10);
     await adminSchema.create(req.body).then((data) => {
         res.status(200).json({ message: "Admin Created Successfully", data });
     })
@@ -22,10 +22,10 @@ module.exports.adminRegister = async (req, res) => {
 
 module.exports.adminLogin = async (req, res) => {
     console.log(req.body.adminPassword);
-    
+
     let admin = await adminSchema.findOne({ adminEmail: req.body.Email });
     console.log(admin);
-    
+
     if (!admin) {
         console.log("Admin not found for email:", req.body.Email);
         return res.status(200).json({ message: "Admin Not Found" });
@@ -34,7 +34,7 @@ module.exports.adminLogin = async (req, res) => {
     // Fix: Compare with admin.adminPassword
     if (await bcryptjs.compare(req.body.adminPassword, admin.adminPassword)) {
         console.log(req.body.adminPassword);
-        
+
         let token = jwt.sign({ adminData: admin }, "employee000", { expiresIn: "3h" });
         res.status(200).json({ message: "Admin Log In", token: token });
         console.log(token);
@@ -86,12 +86,21 @@ module.exports.updateAdmin = async (req, res) => {
 }
 
 module.exports.adminProfile = async (req, res) => {
-    let profile = await adminSchema.findById(req.user.adminData._id);
-    if (!profile) {
-        return res.status(404).json({ message: "Admin Not Found" });
+    try {
+        const profile = await adminSchema.findById(req.user.adminData._id);
+
+        if (!profile) {
+            return res.status(404).json({ message: "Admin Not Found" });
+        }
+
+        console.log("Admin Profile Found:", profile); 
+
+        res.status(200).json({ message: "Admin Profile", data: profile });
+    } catch (error) {
+        console.error("Error fetching admin:", error);
+        res.status(500).json({ message: "Server Error", error: error.message });
     }
-    res.status(200).json({ message: "Admin Profile", data: profile });
-}
+};
 
 module.exports.adminChangePassword = async (req, res) => {
     let admin = await adminSchema.findById(req.user.adminData._id);

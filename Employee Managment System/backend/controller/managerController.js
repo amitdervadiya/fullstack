@@ -11,16 +11,15 @@ module.exports.managerRegister = async (req, res) => {
     console.log(req.body);
 
     req.body.image = req.file?.path || null;
-    req.body.managerPassword = await bcryptjs.hash(req.body.managerPassword, 10);
+    req.body.Password = await bcryptjs.hash(req.body.Password, 10);
 
     if (!req.body.adminId) {
         return res.status(400).json({ message: "Admin ID is required!" });
     }
-
     await managerSchema.create(req.body).then((data) =>
         managerSchema.findById(data._id).populate('adminId')
-    ).then((populatedData) =>
-        res.status(200).json({ message: "Manager Created Successfully", data: populatedData })
+    ).then((data) =>
+        res.status(200).json({ message: "Manager Created Successfully", data: data })
     ).catch((error) =>
         res.status(500).json({ message: "Server Error", error })
     );
@@ -28,20 +27,36 @@ module.exports.managerRegister = async (req, res) => {
 
 
 module.exports.managerLogin = async (req, res) => {
-    console.log(req.body)
-    let manager = await managerSchema.findOne({ managerEmail: req.body.managerEmail });
+    try {
+        console.log("Request Body:", req.body);
 
-    if (!manager) {
-        return res.status(200).json({ message: "Manager Not Found" });
+
+
+        let manager = await managerSchema.findOne({ Email: req.body.Email });
+
+        console.log("Found Manager:", manager);
+        if (!manager) {
+            return res.status(404).json({ message: "Manager Not Found" });
+        }
+
+        if (!manager.Password) {
+            return res.status(500).json({ message: "Password field is missing in DB" });
+        }
+
+        const isMatch = await bcryptjs.compare(req.body.Password, manager.Password);
+        if (isMatch) {
+            let token = jwt.sign({ managerData: manager }, "employee000", { expiresIn: "3h" });
+            return res.status(200).json({ message: "Manager Log In", token });
+        } else {
+            return res.status(401).json({ message: "Password is wrong" });
+        }
+    } catch (error) {
+        console.error("Login error:", error);
+        res.status(500).json({ message: "Internal Server Error" });
     }
-    if (await bcryptjs.compare(req.body.managerPassword, manager.managerPassword)) {
-        let token = jwt.sign({ managerData: manager }, "employee000", { expiresIn: "3h" });
-        res.status(200).json({ message: "Manager Log In", token: token });
-        console.log(token)
-    } else {
-        res.status(200).json({ message: "Password is wrong" });
-    }
-}
+};
+
+
 module.exports.deleteManager = async (req, res) => {
     await managerSchema.findByIdAndDelete(req.query.id).then((data) => {
         if (fs.existsSync(data.image)) {
@@ -55,7 +70,7 @@ module.exports.updateManager = async (req, res) => {
     if (req.user.managerData._id !== req.query.id) {
         return res.status(403).json({ message: "Access denied. You can only update your own profile." });
     }
-    req.body.managerPassword = await bcryptjs.hash(req.body.managerPassword, 10);
+    req.body.managerPassword = await bcryptjs.hash(req.body.Password, 10);
     const data = await managerSchema.findByIdAndUpdate(req.query.id, req.body);
     if (!data) {
         return res.status(404).json({ message: "Manager not found" });
@@ -98,7 +113,7 @@ module.exports.managerChangePassword = async (req, res) => {
         return res.status(404).json({ message: "Manager Not Found" });
     }
 
-    const compare = await bcryptjs.compare(req.body.oldPassword, manager.managerPassword);
+    const compare = await bcryptjs.compare(req.body.oldPassword, manager.Password);
     if (!compare) {
         return res.status(400).json({ message: "Old Password is incorrect" });
     }
@@ -113,7 +128,7 @@ module.exports.managerChangePassword = async (req, res) => {
 }
 
 module.exports.forgotPassword = async (req, res) => {
-    let manager = await managerSchema.findOne({ managerEmail: req.body.managerEmail });
+    let manager = await managerSchema.findOne({ Email: req.body.Email });
     if (!manager) {
         return res.status(404).json({ message: "Manager Not Found" });
     }
@@ -122,12 +137,12 @@ module.exports.forgotPassword = async (req, res) => {
     manager.resetOtp = otp;
     await manager.save();
 
-    sendOtp(manager.managerEmail, otp);
+    sendOtp(manager.Email, otp);
     res.status(200).json({ message: "OTP sent to email" });
 }
 
 module.exports.resetPassword = async (req, res) => {
-    let manager = await managerSchema.findOne({ managerEmail: req.body.managerEmail, resetOtp: req.body.otp });
+    let manager = await managerSchema.findOne({ Email: req.body.Email, resetOtp: req.body.otp });
     if (!manager) {
         return res.status(400).json({ message: "Invalid OTP" });
     }
@@ -136,7 +151,7 @@ module.exports.resetPassword = async (req, res) => {
         return res.status(400).json({ message: "New Password and Confirm Password do not match" });
     }
 
-    manager.managerPassword = await bcryptjs.hash(req.body.newPassword, 10);
+    manager.Password = await bcryptjs.hash(req.body.newPassword, 10);
     await manager.save();
 
     res.status(200).json({ message: "Password reset successfully" });

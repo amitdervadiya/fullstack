@@ -24,12 +24,12 @@ export default function Signuppage() {
             const formData = new FormData();
             formData.append('adminName', adminName);
             formData.append('Email', Email);
-            formData.append('adminPassword', adminPassword);  // Ensure this is present
+            formData.append('adminPassword', adminPassword);  
             formData.append('adminPhone', adminPhone);
             formData.append('gender', gender);
             formData.append('image', image);
     
-            console.log("FormData:", Object.fromEntries(formData)); // Debugging log
+            console.log("FormData:", Object.fromEntries(formData)); 
     
             const response = await axios.post('http://localhost:2005/Register', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
@@ -116,9 +116,12 @@ export default function Signuppage() {
                 >
                     Sign Up
                 </button>
-                <button onClick={login}>
-                    already have account
-                </button>
+                <button
+          onClick={login}
+          className="w-full mt-2 p-3 rounded-lg bg-gray-600 text-white font-semibold hover:bg-gray-700 transition duration-300 active:scale-95"
+        >
+          Already have an account?
+        </button>
             </form>
         </div>
     );

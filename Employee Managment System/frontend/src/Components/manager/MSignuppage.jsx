@@ -12,40 +12,41 @@ export default function MSignuppage() {
   const [adminId, setAdminId] = useState("");
 
   const navigate = useNavigate();
-
   useEffect(() => {
-    axios
-      .get("http://localhost:2005/AdminProfile", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      })
+    axios.get("http://localhost:2005/AdminProfile", {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    })
       .then((response) => {
-        setAdminId(response.data._id); // Auto-set adminId
+        console.log("Full Response:", response);
+        console.log("Admin Data:", response.data?.data);
+        console.log("Admin ID:", response.data?.data?._id);
+        setAdminId(response.data?.data?._id);
       })
       .catch((error) => {
-        console.error("Error fetching admin:", error);
+        console.error("Error fetching admin:", error.response?.data || error.message);
       });
   }, []);
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!managerPassword) {
       alert("Password is required!");
       return;
     }
 
     const formData = new FormData();
-    formData.append("managerName", managerName);
-    formData.append("managerEmail", managerEmail);
-    formData.append("managerPassword", managerPassword);
-    formData.append("managerPhone", managerPhone);
+    formData.append("Name", managerName);
+    formData.append("Email", managerEmail);
+    formData.append("Password", managerPassword);
+    formData.append("Phone", managerPhone);
     formData.append("gender", gender);
     formData.append("image", image);
     formData.append("adminId", adminId);
 
     axios.post("http://localhost:2005/manager/Register", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      })
+      headers: { "Content-Type": "multipart/form-data" },
+    })
       .then((response) => {
         console.log(response.data);
         navigate("/mlogin");
@@ -54,10 +55,12 @@ export default function MSignuppage() {
         console.error("Error during registration:", error);
       });
   };
-  const mlogin = ()=>{
+
+  const mlogin = () => {
     navigate("/mlogin");
   }
-  
+
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 px-4">
       <form
@@ -72,6 +75,7 @@ export default function MSignuppage() {
         <div className="space-y-4">
           <input
             type="text"
+            name="Name"
             onChange={(e) => setManagerName(e.target.value)}
             placeholder="Full Name"
             className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
@@ -88,6 +92,7 @@ export default function MSignuppage() {
             type="password"
             onChange={(e) => setManagerPassword(e.target.value)}
             placeholder="Password"
+            name="Password"
             className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
             required
           />
@@ -95,12 +100,14 @@ export default function MSignuppage() {
             type="tel"
             onChange={(e) => setManagerPhone(e.target.value)}
             placeholder="Phone Number"
+            name="Phone"
             className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
             required
           />
 
           <select
             onChange={(e) => setGender(e.target.value)}
+            name="gender"
             className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
             required
           >
@@ -114,6 +121,7 @@ export default function MSignuppage() {
             type="file"
             onChange={(e) => setImage(e.target.files[0])}
             accept="image/*"
+            name="image"
             className="w-full p-2 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
           />
         </div>

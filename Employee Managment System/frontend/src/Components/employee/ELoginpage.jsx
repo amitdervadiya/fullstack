@@ -47,9 +47,6 @@ export default function Eloginpage() {
                 encType='multipart/form-data'
             >
                 <h2 className="text-2xl font-bold text-white text-center mb-5">employee login</h2>
-
-
-
                 <input
                     type="email"
                     name='employeeEmail'

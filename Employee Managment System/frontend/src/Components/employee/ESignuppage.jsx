@@ -62,7 +62,7 @@ export default function MSignuppage() {
       });
 
       if (response) {
-        navigate("/mlogin");
+        navigate("/eloginpage");
       }
       console.log("Employee registered:", response.data);
     } catch (error) {

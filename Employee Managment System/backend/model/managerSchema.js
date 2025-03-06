@@ -1,19 +1,19 @@
 const mongoose = require('mongoose');
 
 const schema = new mongoose.Schema({
-    managerName: {
+    Name: {
         type: String,
         required: true
     },
-    managerEmail: {
+    Email: {
         type: String,
         required: true
     },
-    managerPhone: {
+    Phone: {
         type: Number,
         required: true
     },
-    managerPassword: {
+    Password: {
         type: String,
         required: true
     },
