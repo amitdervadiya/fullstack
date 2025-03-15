@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { jwtDecode } from 'jwt-decode';
 
 export default function MSignuppage() {
   const [managerName, setManagerName] = useState("");
@@ -13,20 +14,35 @@ export default function MSignuppage() {
 
   const navigate = useNavigate();
   useEffect(() => {
-    axios.get("http://localhost:2005/AdminProfile", {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    })
-      .then((response) => {
-        console.log("Full Response:", response);
-        console.log("Admin Data:", response.data?.data);
-        console.log("Admin ID:", response.data?.data?._id);
-        setAdminId(response.data?.data?._id);
-      })
-      .catch((error) => {
-        console.error("Error fetching admin:", error.response?.data || error.message);
-      });
-  }, []);
+    const token = localStorage.getItem("token");
 
+    if (!token) {
+      console.error("No token found");
+      return;
+    }
+
+    try {
+      const decoded = jwtDecode(token);
+      console.log(decoded)
+      const Email = decoded.adminData.Email;
+
+
+      axios.get(`http://localhost:2005/AdminProfile?Email=${Email}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+        .then((response) => {
+          console.log(response.data);
+          
+          setAdminId(response.data?.data?._id);
+        })
+        .catch((error) => {
+          console.error("Error fetching admin profile:", error);
+        });
+
+    } catch (error) {
+      console.error("Error decoding token:", error);
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -83,6 +99,7 @@ export default function MSignuppage() {
           />
           <input
             type="email"
+            name="Email"
             onChange={(e) => setManagerEmail(e.target.value)}
             placeholder="Email"
             className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"

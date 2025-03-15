@@ -13,7 +13,10 @@ const fs = require('fs');
 module.exports.adminRegister = async (req, res) => {
     req.body.image = req.file.path
     console.log(req.body.adminPassword)
-    req.body.adminPassword = await bcryptjs.hash(req.body.adminPassword, 10);
+    let admin = req.body.Email
+    if (admin)
+
+        req.body.adminPassword = await bcryptjs.hash(req.body.adminPassword, 10);
     await adminSchema.create(req.body).then((data) => {
         res.status(200).json({ message: "Admin Created Successfully", data });
     })
@@ -52,7 +55,7 @@ module.exports.managerList = async (req, res) => {
 }
 module.exports.employeeList = async (req, res) => {
     await employeeSchema.find({}).then((data) => {
-        res.status(200).json({ message: "All Manager Data", data });
+        res.status(200).json({ message: "All employee Data", data });
     });
 }
 module.exports.adminList = async (req, res) => {
@@ -84,23 +87,30 @@ module.exports.updateAdmin = async (req, res) => {
     }
     res.status(200).json({ message: "Admin is Updated", data });
 }
-
 module.exports.adminProfile = async (req, res) => {
     try {
-        const profile = await adminSchema.findById(req.user.adminData._id);
+        const email = req.query.Email; // Correctly extract Email from query params
+
+        if (!email) {
+            return res.status(400).json({ message: "Email is required" });
+        }
+
+        const profile = await adminSchema.findOne({ Email: email });
 
         if (!profile) {
             return res.status(404).json({ message: "Admin Not Found" });
         }
 
-        console.log("Admin Profile Found:", profile); 
-
+        console.log("Admin Profile Found:", profile);
         res.status(200).json({ message: "Admin Profile", data: profile });
+
     } catch (error) {
         console.error("Error fetching admin:", error);
         res.status(500).json({ message: "Server Error", error: error.message });
     }
 };
+
+
 
 module.exports.adminChangePassword = async (req, res) => {
     let admin = await adminSchema.findById(req.user.adminData._id);
