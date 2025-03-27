@@ -34,10 +34,14 @@ export default function Signuppage() {
             const response = await axios.post('http://localhost:2005/Register', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
-    
+         
             console.log(response.data);
-            navigate('/login');
+            if(response){
+                navigate('/login');
+
+            }
         } catch (error) {
+            
             console.error('Error during registration:', error);
         }
     };

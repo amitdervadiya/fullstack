@@ -52,7 +52,7 @@ export default function MSignuppage() {
       formData.append("employeePhone", employeePhone);
       formData.append("gender", gender);
       formData.append("image", image);
-      formData.append("managerId", managerId); // Include managerId
+      formData.append("managerId", managerId); 
 
       let response = await axios.post("http://localhost:2005/employee/Register", formData, {
         headers: {

@@ -13,20 +13,23 @@ const fs = require('fs');
 module.exports.adminRegister = async (req, res) => {
     req.body.image = req.file.path
     console.log(req.body.adminPassword)
+
+
     let admin = req.body.Email
     if (admin)
-
         req.body.adminPassword = await bcryptjs.hash(req.body.adminPassword, 10);
     await adminSchema.create(req.body).then((data) => {
         res.status(200).json({ message: "Admin Created Successfully", data });
     })
 
+
+
 }
 
 module.exports.adminLogin = async (req, res) => {
     console.log(req.body.adminPassword);
-
-    let admin = await adminSchema.findOne({ adminEmail: req.body.Email });
+ console.log(req.body.Email)
+    let admin = await adminSchema.findOne({ Email: req.body.Email });
     console.log(admin);
 
     if (!admin) {
@@ -34,7 +37,7 @@ module.exports.adminLogin = async (req, res) => {
         return res.status(200).json({ message: "Admin Not Found" });
     }
 
-    // Fix: Compare with admin.adminPassword
+
     if (await bcryptjs.compare(req.body.adminPassword, admin.adminPassword)) {
         console.log(req.body.adminPassword);
 

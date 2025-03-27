@@ -40,8 +40,8 @@ export default function Mdashboard() {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((response) => {
-        console.log(response.data);
-        setmanagerData(response.data.data);
+        console.log(response.data)
+        setmanagerData([response.data]);
       })
       .catch((error) => {
         console.error("Error fetching manager:", error);
@@ -67,6 +67,23 @@ export default function Mdashboard() {
             </li>
           </ul>
         </nav>
+        
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {
+            managerdata.map((e, i) => (
+              <div key={i} className="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                <label className="font-semibold text-lg  text-gray-700">Name:</label>
+                {console.log(managerdata)}
+                <p className="text-lg text-gray-700">{e.Name}</p>
+                <label className="font-semibold text-lg">Email:</label>
+                <p className="text-gray-500">{e.Email}</p>/
+                <label className="font-semibold text-lg ">Password:</label>
+                <p className="text-gray-500">.....</p>
+              </div>
+            ))
+          }
+
+        </div>
       </div>
 
 
